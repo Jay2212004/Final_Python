@@ -1,0 +1,367 @@
+<!--<form method="get" action="{% url 'search' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+{% if query %}
+  <p>Search results for "{{ query }}":</p>
+  {% if results %}
+      <ul>
+          {% for result in results %}
+              <li>{{ result.name }}</li>
+          {% endfor %}
+      </ul>
+  {% else %}
+      <p>No results found for "{{ query }}".</p>
+  {% endif %}
+{% endif %}
+    -->
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Main Page</title>
+  <!--<style>
+.dropdown{
+  position: relative;
+  align-items:right ;
+  margin-right: 20px;
+  padding: 2px;
+}
+
+  </style>
+-->
+<style>
+  .dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+  </style>
+</head>
+<body>
+    <header class="text-gray-400 bg-gray-900 body-font">
+    
+        <div class="container mx-auto flex flex-wrap p:0 flex-col md:flex-row items-center">
+          
+          <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+             
+            <img class ="mt-4"src="/static/media/logo.png" style="width:110px ;  "> 
+              
+               
+            <span class="ml:9 text-xl">CONNECT</span>
+                  
+          </a>
+          <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-700	flex flex-wrap items-center text-base justify-center">
+            <!--<a class="mr-5 hover:text-white"href="">Home</a>-->
+            <div class="dropdown">
+              <button class="dropbtn">Filter</button>
+              <div class="dropdown-content">
+                <a href="#">Name</a>
+                <a href="#">Location</a>
+                
+              </div>
+            </div>
+            
+           
+            
+          </nav>
+          <!--<button class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0" style="height: auto;"  onclick="window.location.href='/login/'"> Logout -->
+            <!--<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">-->
+              <a href="{% url 'users-home' %}">Logout</a>
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+           
+            </svg>
+          </button>
+        </div>
+      </header>
+      <!--<button class="filter-btn">Filter</button>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#"></a></li>
+          <li><a class="dropdown-item" href="#"></a></li>
+          <li><a class="dropdown-item" href="#"></a></li>
+        </ul>
+      </div>-->
+      
+
+      <section class="text-gray-400 bg-gray-900 body-font">
+          <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap -m-4">
+          <div class="p-4 md:w-1/3">
+              <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+                  <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="data:image/jpeg;base64,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" alt="blog">
+            <div class="p-6">
+              <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+              <h1 class="title-font text-lg font-medium text-white mb-3">Sparkling Wings </h1>
+              <p class="leading-relaxed mb-3">Slogan</p>
+              <div class="flex items-center flex-wrap ">
+                <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">-->
+                  <!--<svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                  </svg>-->
+                </span>
+            </div>
+        </div>
+          </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+            <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+            <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+            <div class="p-6">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+                <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+                <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+                <div class="flex items-center flex-wrap">
+                    <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>1.2K
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                    </svg>6
+                </span>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-4 md:w-1/3">
+    <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+        <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+        <div class="p-6">
+            <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+            <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+            <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+            <div class="flex items-center flex-wrap">
+                <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>1.2K
+            </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                  </svg>6
+                </span>-->
+            </div>
+        </div>
+    </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+            <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+            <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+            <div class="p-6">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+                <h1 class="title-font text-lg font-medium text-white mb-3">NGO Name</h1>
+                <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+                <div class="flex items-center flex-wrap">
+                <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>1.2K
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                  </svg>6
+                </span>-->
+            </div>
+        </div>
+    </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+          <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+              <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+            <div class="p-6">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+              <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+              <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+              <div class="flex items-center flex-wrap">
+                  <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                      <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M5 12h14"></path>
+                          <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                        <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>1.2K
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                    </svg>6
+                </span>-->
+            </div>
+        </div>
+          </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+            <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+                <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+                <div class="p-6">
+                    <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+              <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+              <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+              <div class="flex items-center flex-wrap">
+                  <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                      <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M5 12h14"></path>
+                          <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>1.2K
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                    </svg>6
+                </span>-->
+            </div>
+        </div>
+          </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+            <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+                <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+                <div class="p-6">
+              <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+              <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+              <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+              <div class="flex items-center flex-wrap">
+                  <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                      <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+                <!-- <span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>1.2K
+                </span>
+                <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                  </svg>6
+                </span>-->
+            </div>
+        </div>
+    </div>
+        </div>
+        <div class="p-4 md:w-1/3">
+            <div class="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
+                <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/722x402" alt="blog">
+                <div class="p-6">
+                    <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"></h2>
+                    <h1 class="title-font text-lg font-medium text-white mb-3">Ngo Name</h1>
+              <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+              <div class="flex items-center flex-wrap ">
+                <a class="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0"href="#">Join Now
+                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                </a>
+                <!--<span class="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
+                    <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>1.2K
+            </span>
+            <span class="text-gray-500 inline-flex items-center leading-none text-sm">
+                <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                  </svg>6
+                </span>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+</body>
+</html>
