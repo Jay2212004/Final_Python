@@ -17,6 +17,8 @@ from django.contrib.auth.forms import AuthenticationForm
 import os
 def search(request):
     return render(request, 'users/search.html')
+def xyz(request):
+    return render(request, 'users/xyz.html')
 
 
 def home2(request):
@@ -36,7 +38,7 @@ class RegisterView(View):
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
         if request.user.is_authenticated:
-            return redirect(to='/')
+            return redirect(to='xyz')
 
         # else process dispatch as it otherwise normally would
         return super(RegisterView, self).dispatch(request, *args, **kwargs)

@@ -13,4 +13,5 @@ urlpatterns = [
     path('aboutus/',aboutus),
     path('home/', home, name='home'),
     path('search/', search, name='search'),
+    path('xyz/', xyz, name='xyz'),
 ]

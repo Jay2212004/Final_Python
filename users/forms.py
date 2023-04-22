@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
+from django.core.validators import FileExtensionValidator
 
 
 class RegisterForm(UserCreationForm):
@@ -81,10 +82,12 @@ class UpdateUserForm(forms.ModelForm):
 class UpdateProfileForm(forms.ModelForm):
     avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
     bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    pdf_file = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control-file'}), label='Upload PDF', required=True, help_text='Only PDF files are allowed.', validators=[FileExtensionValidator(allowed_extensions=['pdf'])],)
+
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['avatar', 'bio','pdf_file']
 
 
 class SearchForm(forms.Form):
