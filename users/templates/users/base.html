@@ -14,7 +14,7 @@
     <title>{% block title %} {% endblock %} </title>
 </head>
 
-<body>
+<body style="background-image:url('https://source.unsplash.com/1920x1080/?NGO,Nature') ;">
   <div class="container p-3 my-3">
     <div class="row">
       <div class="col-md-12">
@@ -28,7 +28,7 @@
                 
                 {% if user.is_authenticated %}
                 <!--<a href="{% url 'home' %}" role="button" class="nav-item nav-link" style="color: white;">Home</a>-->
-                <a class="btn btn-primary btn-lg nav-item nav-link"style="color: white;" href="{% url 'home' %}" role="button">Home</a>
+                <a class="nav-item nav-link"style="color:white" href="{% url 'home' %}">Home</a>
                 
 
                 <!--<a href="{% url 'users-profile' %}" role="button" class="nav-item nav-link">Profile</a>
@@ -37,7 +37,7 @@
                   <!--<a href="{% url 'login' %}" class="nav-item nav-link">Sign in</a>-->
                   {% endif %}
                   {% if not user.is_authenticated %}
-                  <a href="{% url 'users-home' %}"role="button" class="navbar-brand">Home</a>
+                  <a href="{% url 'users-home' %}"role="button" class="navbar-brand"style="color: white;">Home</a>
                   {% endif %}
                 </div>
                 

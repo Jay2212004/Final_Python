@@ -31,6 +31,6 @@ class NGO(models.Model):
     contactno=models.CharField(max_length=10)
     description=models.TextField(blank=True,max_length=500)
     website=models.CharField(max_length=500)
-    
+    logo = models.ImageField(upload_to='images/',default='default_logo.png')
     def __str__(self):
         return self.name

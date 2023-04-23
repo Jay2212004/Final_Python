@@ -16,7 +16,40 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 import os
 def search(request):
+    ServiceData=NGO.objects.all()
+    '''for a in ServiceData:
+        print(a.name)
+        print(a.location)
+        print(a.email)'''
+    data={
+         'ServiceData':ServiceData
+    }        
+    '''if request.method=="GET":
+        st=request.GET.get('servicename')
+        if st!=None:
+            ServiceData=NGO.objects.filter(name=st)
+    data={
+        'servicesData':ServiceData
+    }
+  '''
     return render(request, 'users/search.html')
+def search1(request):
+    ngos=NGO.objects.all()
+    
+    data={
+        'ngos':ngos
+          }
+                
+
+    '''if request.method=="GET":
+        st=request.GET.get('servicename')
+        if st!=None:
+            ServiceData=NGO.objects.filter(name=st)
+    data={
+        'servicesData':ServiceData
+    }
+  '''
+    return render(request, 'users/search1.html')
 def xyz(request):
     return render(request, 'users/xyz.html')
 
@@ -113,19 +146,23 @@ def profile(request):
 
     return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
 def ngo_list(request):
-    ngos = NGO.objects.all()
-    name_query = request.GET.get('name')
-    location_query = request.GET.get('location')
-    if name_query:
-        ngos = ngos.filter(name__icontains=name_query)
-    if location_query:
-        ngos = ngos.filter(location__icontains=location_query)
-    context = {
-        'ngos': ngos,
-        'name_query': name_query,
-        'location_query': location_query,
+    S=NGO.objects.all()
+    '''for a in ServiceData:
+        print(a.name)
+        print(a.location)
+        print(a.email)'''
+    data={
+         'ngos':S
+    }        
+    '''if request.method=="GET":
+        st=request.GET.get('servicename')
+        if st!=None:
+            ServiceData=NGO.objects.filter(name=st)
+    data={
+        'servicesData':ServiceData
     }
-    return render(request, 'ngo_list.html', context)
+  '''
+    return render(request, 'users/ngo_list.html')
 '''from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 '''
