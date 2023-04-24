@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
+import razorpay
 from requests import request
 from .models import *
 from django.db.models import Q
@@ -17,39 +18,40 @@ from django.contrib.auth.forms import AuthenticationForm
 import os
 def search(request):
     ServiceData=NGO.objects.all()
+    
     '''for a in ServiceData:
         print(a.name)
         print(a.location)
         print(a.email)'''
-    data={
-         'ServiceData':ServiceData
-    }        
-    '''if request.method=="GET":
-        st=request.GET.get('servicename')
+    # data={
+    #      'ServiceData':ServiceData
+    # }        
+    if request.method=="GET":
+        st=request.GET.get('Ngo name')
         if st!=None:
-            ServiceData=NGO.objects.filter(name=st)
+            ServiceData=NGO.objects.filter(name__icontains=st)
     data={
-        'servicesData':ServiceData
+        'ServiceData':ServiceData
     }
-  '''
-    return render(request, 'users/search.html')
-def search1(request):
-    ngos=NGO.objects.all()
+
+    return render(request, 'users/search1.html',data)
+# def search1(request):
+#     ngos=NGO.objects.all()
     
-    data={
-        'ngos':ngos
-          }
+#     data={
+#         'ngos':ngos
+#           }
                 
 
-    '''if request.method=="GET":
-        st=request.GET.get('servicename')
-        if st!=None:
-            ServiceData=NGO.objects.filter(name=st)
-    data={
-        'servicesData':ServiceData
-    }
-  '''
-    return render(request, 'users/search1.html')
+#     '''if request.method=="GET":
+#         st=request.GET.get('servicename')
+#         if st!=None:
+#             ServiceData=NGO.objects.filter(name=st)
+#     data={
+#         'servicesData':ServiceData
+#     }
+#   '''
+#     return render(request, 'users/search1.html')
 def xyz(request):
     return render(request, 'users/xyz.html')
 
@@ -223,3 +225,22 @@ def aboutus(request):
     return render(request,"users/About us.html",{})
 def readmore(request):
     return render(request,"https://www.akshayapatra.org/donate-and-save-tax?utm_source=Search-Generic&utm_medium=Tax+Exemption-2023&utm_campaign=GDN-TAPF&gclid=Cj0KCQiAjbagBhD3ARIsANRrqEtqOp4YjzwzJ0sl6kkSehBFs8gYYMDNMiMGF59GCFifBygodLOxDbEaAu8BEALw_wcB")
+def pay(request):
+    if request.method == 'POST':
+        print("h1")
+        amount = amount*100
+        client = razorpay.Client(auth=("rzp_test_xaRL3CAf8X4ZVb","an7ibvdFyyPjRKpItzAx7G9S"))
+        payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":"1"})
+        return render(request,'users/pay.html',{"payment":payment})
+    return render(request,'users/pay.html')   
+
+def donate(request):
+    if request.method == "POST":
+        print("hi")
+        amount = int(request.POST.get("amount"))
+        print(amount)
+        amount = amount*100
+        client = razorpay.Client(auth=("rzp_test_xaRL3CAf8X4ZVb","an7ibvdFyyPjRKpItzAx7G9S"))
+        payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":"0"})
+        return render(request,'users/payment.html',{"payment":payment})
+    return render(request,'users/payment.html')
