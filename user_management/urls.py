@@ -12,7 +12,7 @@ from users.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('pay/', pay, name='pay'),
+     #path('pay/', pay, name='pay'),
     path('', include('users.urls')),
 
     path('login/', CustomLoginView.as_view(redirect_authenticated_user=True, template_name='users/login.html',

@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -40,17 +41,23 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
-    "key": "rzp_test_xaRL3CAf8X4ZVb", // Enter the Key ID generated from the Dashboard
+    "key": "rzp_test_YqC9h8kq0s7oPQ", // Enter the Key ID generated from the Dashboard
     "amount": "{{payment.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
-    "name": "CONNECT", //your business name
+    "name": "Connect", //your business name
     "description": "Test Transaction",
-    
+    //"image": "/{% static 'media/gy1.jpg' %}",
     "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function(response){
+        console.log("Payment Successful")
+        alert("Payment Sucessfull Thanks for your donation")
+        window.location.href = "{% url 'search' %}"
+        //alert(response.payment) ?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_order_id=${response=razrpay_order_id}
+    },
     "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
     "prefill": {
         "name": "Jay Uchagaonkar", //your customer's name
-        "email": "uchagaonkar54jay@gmail.com",
+        "email": "uchagonkar54jay@gmail.com",
         "contact": "8356024668"
     },
     "notes": {
@@ -61,11 +68,20 @@ var options = {
     }
 };
 var rzp1 = new Razorpay(options);
+rzp1.on("payment.failed", function (response){
+    alert(response.error.code);
+    alert(response.error.description);
+    alert(response.error.source);
+    alert(response.error.step);
+    alert(response.error.reason);
+    alert(response.error.metadata.order_id);
+    alert(response.error.metadatta.payment_id);
+})
 document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();
     e.preventDefault();
 }
 </script>
-{% endif %}
+{% endif %}
 </body>
 </html>

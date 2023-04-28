@@ -221,26 +221,28 @@ def login(request):
     return render(request, 'users/login.html', {'form': form})"""
 def contactus(request):
     return render(request,"users/contactus.html",{})
+def success(request):
+    return render(request,"users/success.html",{})
 def aboutus(request):
     return render(request,"users/About us.html",{})
 def readmore(request):
     return render(request,"https://www.akshayapatra.org/donate-and-save-tax?utm_source=Search-Generic&utm_medium=Tax+Exemption-2023&utm_campaign=GDN-TAPF&gclid=Cj0KCQiAjbagBhD3ARIsANRrqEtqOp4YjzwzJ0sl6kkSehBFs8gYYMDNMiMGF59GCFifBygodLOxDbEaAu8BEALw_wcB")
-def pay(request):
-    if request.method == 'POST':
-        print("h1")
-        amount = amount*100
-        client = razorpay.Client(auth=("rzp_test_xaRL3CAf8X4ZVb","an7ibvdFyyPjRKpItzAx7G9S"))
-        payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":"1"})
-        return render(request,'users/pay.html',{"payment":payment})
-    return render(request,'users/pay.html')   
+#def pay(request):
+#     if request.method == 'POST':
+#         print("h1")
+#         amount = amount*100
+#         client = razorpay.Client(auth=("rzp_test_xaRL3CAf8X4ZVb","an7ibvdFyyPjRKpItzAx7G9S"))
+#         payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":"1"})
+#         return render(request,'users/pay.html',{"payment":payment})
+#     return render(request,'users/pay.html')   
 
 def donate(request):
     if request.method == "POST":
-        print("hi")
+        #print("hi")
         amount = int(request.POST.get("amount"))
-        print(amount)
+       # print(amount)
         amount = amount*100
-        client = razorpay.Client(auth=("rzp_test_xaRL3CAf8X4ZVb","an7ibvdFyyPjRKpItzAx7G9S"))
-        payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":"0"})
+        client = razorpay.Client(auth=("rzp_test_YqC9h8kq0s7oPQ","R2x6qbF0d3pED1FkaUQy94rP"))
+        payment = client.order.create({"amount":amount,"currency":"INR","payment_capture":1})
         return render(request,'users/payment.html',{"payment":payment})
     return render(request,'users/payment.html')

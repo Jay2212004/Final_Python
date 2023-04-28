@@ -15,6 +15,7 @@ urlpatterns = [
     path('search/', search, name='search'),
     # path('search1/', search1, name='search1'),
     path('xyz/', xyz, name='xyz'),
-    path('pay/', pay, name='pay'),
+   # path('pay/', pay, name='pay'),
     path('donate/', donate, name='donate'),
+    path('success/', success, name='succes'),
 ]
